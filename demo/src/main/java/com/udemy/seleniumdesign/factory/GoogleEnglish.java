@@ -1,19 +1,21 @@
-package com.udemy.seleniumdesign.test.factory;
+package com.udemy.seleniumdesign.factory;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class GoogleEnglish extends GooglePage {
+import com.google.common.util.concurrent.Uninterruptibles;
 
-    private WebDriver driver;
-    private WebDriverWait wait;
+class GoogleEnglish extends GooglePage {
+
+    protected WebDriver driver;
+    protected WebDriverWait wait;
 
     @FindBy(name = "q")
     private WebElement searchBox;
@@ -21,12 +23,12 @@ public class GoogleEnglish extends GooglePage {
     @FindBy(name = "btnK")
     private WebElement searchButton;
 
-    @FindBy(css = "div.rc")
+    @FindBy(css = "div.g")
     private List<WebElement> results;
 
     public GoogleEnglish(final WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
@@ -37,7 +39,12 @@ public class GoogleEnglish extends GooglePage {
 
     @Override
     public void search(String keyword) {
-        this.searchBox.sendKeys(keyword);
+
+        for(char ch : keyword.toCharArray()) {
+            Uninterruptibles.sleepUninterruptibly(5, TimeUnit.MILLISECONDS);
+            this.searchBox.sendKeys(ch + "");
+        }
+
         this.wait.until((driver) -> this.searchButton.isDisplayed());
         this.searchButton.click();
     }

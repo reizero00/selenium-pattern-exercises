@@ -1,4 +1,4 @@
-package com.udemy.seleniumdesign.test.factory;
+package com.udemy.seleniumdesign.factory;
 
 public abstract class GooglePage {
 
