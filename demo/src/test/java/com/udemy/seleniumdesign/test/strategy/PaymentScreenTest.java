@@ -10,6 +10,7 @@ import org.testng.collections.Maps;
 import com.udemy.seleniumdesign.strategy.Banking;
 import com.udemy.seleniumdesign.strategy.CreditCard;
 import com.udemy.seleniumdesign.strategy.PaymentOption;
+import com.udemy.seleniumdesign.strategy.PaymentOptionFactory;
 import com.udemy.seleniumdesign.strategy.PaymentScreen;
 import com.udemy.seleniumdesign.test.BaseTest;
 
@@ -42,6 +43,26 @@ public class PaymentScreenTest extends BaseTest {
         );
     }
 
+    @Test(dataProvider = "getFactoryData")
+    public void paymentFactoryTest(String paymentType, Map<String, String> paymentDetails) {
+
+        this.paymentScreen.goTo();
+        this.paymentScreen.getUserInformation().enterDetails(
+            "FirstName",
+            "LastName",
+            "TestEmail@email.com"
+        );
+
+        this.paymentScreen.setPaymentOption(PaymentOptionFactory.get(paymentType));
+        this.paymentScreen.pay(paymentDetails);
+
+        String orderNumber = this.paymentScreen.getOrder().placeOrder();
+
+        System.out.println(
+            "Order Number: " + orderNumber
+        );
+    }
+
     @DataProvider
     public Object[][] getData() {
 
@@ -59,6 +80,26 @@ public class PaymentScreenTest extends BaseTest {
         return new Object[][]{
             {new CreditCard(), creditCard},
             {new Banking(), netBank},
+        };
+    }
+
+    @DataProvider
+    public Object[][] getFactoryData() {
+
+        Map<String, String> creditCard = Maps.newHashMap();
+        creditCard.put("cc", "1234 5678 1234 5678");
+        creditCard.put("year", "2020");
+        creditCard.put("cvv", "123");
+
+        Map<String, String> netBank = Maps.newHashMap();
+        netBank.put("bank", "WELLS FARGO");
+        netBank.put("account", "0123456789");
+        netBank.put("pin", "1234");
+
+
+        return new Object[][]{
+            {"CC", creditCard},
+            {"NB", netBank},
         };
     }
 
