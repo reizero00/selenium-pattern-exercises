@@ -10,6 +10,7 @@ import com.udemy.seleniumdesign.template.pages.AmazonSearchPage;
 
 public class ShoppingAmazon extends ShoppingTemplate {
 
+    @SuppressWarnings("unused")
     private WebDriver driver;
     private String product;
 

@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AmazonProductPage {
 
+    @SuppressWarnings("unused")
     private WebDriver driver;
     private WebDriverWait wait;
     
