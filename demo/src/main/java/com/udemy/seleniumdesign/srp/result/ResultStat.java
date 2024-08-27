@@ -14,7 +14,6 @@ public class ResultStat extends AbstractComponent {
     
     public ResultStat(WebDriver driver) {
         super(driver);
-        //TODO Auto-generated constructor stub
     }
 
     public String getStats() {
